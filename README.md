@@ -3,6 +3,7 @@
 > Plugin for handling media library (dirs/files manipulation) through api in Strapi.
 
 ---
+[![npm-url][npm-url-svg]][npm-url]
 
 ## Features
 
@@ -18,12 +19,9 @@ npm i strapi-plugin-media-library-handler
 
 Plugin is compatible with Strapi `5.0.0` and above.
 
-## Configuration
-No additional configuration needed, the plugin is automatically enabled after installation.
-
-
 ## Media & Folder Management API
 
+* [Configuration](#configuration)
 * [Folders](#folders)
   * [Create Folder](#create-folder)
   * [List Folders](#list-folders)
@@ -39,6 +37,11 @@ No additional configuration needed, the plugin is automatically enabled after in
   * [Get Media File](#get-media-file)
   * [Delete Media File](#delete-media-file)
 * [Error Handling](#error-handling)
+
+## Configuration
+No additional configuration needed, the plugin is automatically enabled after installation.
+
+Generate API Token (with proper permissions for Media section) which would be provided as `Authorization` header to each API call.
 
 ## Folders
 
@@ -421,3 +424,6 @@ DELETE {STRAPI_BASE_URL}/api/media/files/:id
 ## License
 
 This project is licensed under the [MIT](./LICENSE).
+
+[npm-url-svg]: https://img.shields.io/npm/v/strapi-plugin-media-library-handler.svg
+[npm-url]: https://www.npmjs.com/package/strapi-plugin-media-library-handler
