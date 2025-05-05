@@ -1,11 +1,11 @@
 {
-  "version": "0.1.1",
+  "version": "0.1.2",
   "name": "strapi-plugin-media-library-handler",
   "description": "Plugin for handling media library (dirs/files manipulation) through api in Strapi",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com:SamirHodzic/strapi-plugin-media-library-handler.git"
+    "url": "git+ssh://git@github.com/SamirHodzic/strapi-plugin-media-library-handler.git"
   },
   "homepage": "https://github.com/SamirHodzic/strapi-plugin-media-library-handler#readme",
   "author": "SamirH",
@@ -45,5 +45,11 @@
   "peerDependencies": {
     "@strapi/strapi": ">=5.0.0",
     "@strapi/sdk-plugin": "^5.3.2"
-  }
+  },
+  "keywords": [
+    "strapi-plugin",
+    "media-file-handler",
+    "media-manager",
+    "folder-manager"
+  ]
 }
