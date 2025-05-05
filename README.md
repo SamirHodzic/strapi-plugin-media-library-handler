@@ -33,9 +33,11 @@ No additional configuration needed, the plugin is automatically enabled after in
   * [Bulk Delete](#bulk-delete)
   * [Bulk Move](#bulk-move)
   * [Get Folder Structure](#get-folder-structure)
-* [Media](#media)
-  * [Upload Media](#upload-media)
-  * [Update Media](#update-media)
+* [Media Files](#media-files)
+  * [Upload Media File](#upload-media-file)
+  * [Update Media File](#update-media-file)
+  * [Get Media File](#get-media-file)
+  * [Delete Media File](#delete-media-file)
 * [Error Handling](#error-handling)
 
 ## Folders
@@ -44,7 +46,7 @@ No additional configuration needed, the plugin is automatically enabled after in
 
 Create a new folder.
 
-```http
+```
 POST {STRAPI_BASE_URL}/api/media/folders
 Content-Type: application/json
 ```
@@ -53,8 +55,8 @@ Content-Type: application/json
 
 ```json
 {
-  "name": "My New Folder",    // required, non-empty string
-  "parentId": 123             // optional, ID of an existing folder (or null for root)
+  "name": "My New Folder",
+  "parentId": 123
 }
 ```
 
@@ -79,7 +81,7 @@ Content-Type: application/json
 
 Retrieve folders, with optional search and sorting.
 
-```http
+```
 GET {STRAPI_BASE_URL}/api/media/folders?parentId=123&_q=term&sort=name:asc&sort=createdAt:desc
 ```
 
@@ -107,7 +109,7 @@ GET {STRAPI_BASE_URL}/api/media/folders?parentId=123&_q=term&sort=name:asc&sort=
 
 Get a specific folder by its ID, including nested parents up to 5 levels.
 
-```http
+```
 GET {STRAPI_BASE_URL}/api/media/folders/:id
 ```
 
@@ -127,7 +129,7 @@ GET {STRAPI_BASE_URL}/api/media/folders/:id
     "parent": {
       "id": 10,
       "name": "Parent 2"
-      // up to 5 levels...
+      ...
     }
   },
   "children": { "count": 0 },
@@ -145,7 +147,7 @@ GET {STRAPI_BASE_URL}/api/media/folders/:id
 
 Update an existing folder’s name and/or parent.
 
-```http
+```
 PUT {STRAPI_BASE_URL}/api/media/folders/:id
 Content-Type: application/json
 ```
@@ -158,8 +160,8 @@ Content-Type: application/json
 
 ```json
 {
-  "name": "Renamed Folder",   // required, non-empty
-  "parentId": 999             // optional, new parent folder ID or null
+  "name": "Renamed Folder",
+  "parentId": 999          
 }
 ```
 
@@ -183,7 +185,7 @@ Content-Type: application/json
 
 Delete a single folder.
 
-```http
+```
 DELETE {STRAPI_BASE_URL}/api/media/folders/:id
 ```
 
@@ -207,7 +209,7 @@ DELETE {STRAPI_BASE_URL}/api/media/folders/:id
 
 Delete multiple files and folders in one call.
 
-```http
+```
 POST {STRAPI_BASE_URL}/api/media/bulk-delete
 Content-Type: application/json
 ```
@@ -216,8 +218,8 @@ Content-Type: application/json
 
 ```json
 {
-  "fileIds":   [1, 2, 3],   // array of file IDs
-  "folderIds": [10, 11, 12] // array of folder IDs
+  "fileIds":   [1, 2, 3],
+  "folderIds": [10, 11, 12]
 }
 ```
 
@@ -225,8 +227,8 @@ Content-Type: application/json
 
 ```json
 {
-  "deletedFiles":   [ /* file info */ ],
-  "deletedFolders": [ /* folder info */ ]
+  "deletedFiles":   [ { ... } ],
+  "deletedFolders": [ { ... }]
 }
 ```
 
@@ -234,7 +236,7 @@ Content-Type: application/json
 
 Move multiple files and folders to a target folder.
 
-```http
+```
 POST {STRAPI_BASE_URL}/api/media/bulk-move
 Content-Type: application/json
 ```
@@ -243,9 +245,9 @@ Content-Type: application/json
 
 ```json
 {
-  "fileIds":        [1, 2, 3],    // array of file IDs
-  "folderIds":      [10, 11, 12], // array of folder IDs
-  "targetFolderId": 99            // destination folder ID
+  "fileIds":        [1, 2, 3],
+  "folderIds":      [10, 11, 12],
+  "targetFolderId": 99           
 }
 ```
 
@@ -253,8 +255,8 @@ Content-Type: application/json
 
 ```json
 {
-  "movedFiles":   [ /* updated files */ ],
-  "movedFolders": [ /* updated folders */ ]
+  "movedFiles":   [ { ... } ],
+  "movedFolders": [ { ... } ]
 }
 ```
 
@@ -262,7 +264,7 @@ Content-Type: application/json
 
 Retrieve the entire nested folder tree.
 
-```http
+```
 GET {STRAPI_BASE_URL}/api/media/folders-structure
 ```
 
@@ -274,7 +276,7 @@ GET {STRAPI_BASE_URL}/api/media/folders-structure
     "id": 1,
     "name": "Root",
     "children": [
-      { "id": 2, "name": "Child A", "children": [ /* ... */ ] },
+      { "id": 2, "name": "Child A", "children": [ { ... } ] },
       ...
     ]
   }
@@ -287,7 +289,7 @@ GET {STRAPI_BASE_URL}/api/media/folders-structure
 
 Upload a file to a folder.
 
-```http
+```
 POST {STRAPI_BASE_URL}/api/media/files
 Content-Type: multipart/form-data
 ```
@@ -319,7 +321,7 @@ Content-Type: multipart/form-data
 
 Update file metadata (name, alt text, caption, or folder).
 
-```http
+```
 POST {STRAPI_BASE_URL}/api/media/files/:id
 Content-Type: application/json
 ```
@@ -332,10 +334,10 @@ Content-Type: application/json
 
 ```json
 {
-  "name":            "newname.png", // optional
-  "alternativeText": "An example",  // optional
-  "caption":         "Caption text",// optional
-  "folderId":        99             // optional
+  "name":            "newname.png",
+  "alternativeText": "An example", 
+  "caption":         "Caption text",
+  "folderId":        99             
 }
 ```
 
@@ -358,7 +360,7 @@ Content-Type: application/json
 
 Get file metadata (name, alt text, caption, folder, etc).
 
-```http
+```
 GET {STRAPI_BASE_URL}/api/media/files/:id
 Content-Type: application/json
 ```
@@ -389,7 +391,7 @@ Content-Type: application/json
 
 Delete a single media file.
 
-```http
+```
 DELETE {STRAPI_BASE_URL}/api/media/files/:id
 ```
 
