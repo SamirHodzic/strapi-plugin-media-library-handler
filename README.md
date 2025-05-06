@@ -34,6 +34,7 @@ Plugin is compatible with Strapi `5.0.0` and above.
 * [Media Files](#media-files)
   * [Upload Media File](#upload-media-file)
   * [Update Media File](#update-media-file)
+  * [List Media Files](#list-media-files)
   * [Get Media File](#get-media-file)
   * [Delete Media File](#delete-media-file)
 * [Error Handling](#error-handling)
@@ -303,6 +304,7 @@ Content-Type: multipart/form-data
 * `folderId` (integer) — optional.
 * `alternativeText` (string) — optional.
 * `caption` (string) — optional.
+* `skipIfExist` (string) — optional, will skip if there is already file existing with same filename, caption and alternativeText (no matter the folderId).
 
 **Response** (200)
 
@@ -359,13 +361,46 @@ Content-Type: application/json
 }
 ```
 
+### List Media Files
+
+Retrieve files, with optional search by name, caption or alternativeText, and sorting.
+
+```
+GET {STRAPI_BASE_URL}/api/media/files?name=some_term&sort=createdAt:desc
+```
+
+**Query Parameters**
+
+* `name` (string) — optional, filter by filename
+* `caption` (string) — optional, filter by caption
+* `alternativeText` (string) — optional, filter by alternativeText
+* `sort` (string) — optional, repeatable. Format: `field:asc|desc`.
+
+**Response** (200)
+
+```json
+[
+  {
+    "id": 42,
+    "name": "filename.png",
+    "alternativeText": "marketing_contributors_other_internal",
+    "caption": "some random caption",
+    "folder": {
+      "id": 159,
+      "name": "Base dir"
+    },
+    "createdAt": "2025-04-20T11:22:33.444Z",
+    ...
+  },
+]
+```
+
 ### Get Media File
 
 Get file metadata (name, alt text, caption, folder, etc).
 
 ```
 GET {STRAPI_BASE_URL}/api/media/files/:id
-Content-Type: application/json
 ```
 
 **Path Parameter**

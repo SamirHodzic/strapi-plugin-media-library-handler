@@ -246,7 +246,24 @@ export default createCoreController(
           if (!fileObj) ctx.throw(400, 'No file provided');
 
           const payload = normalizeBody(ctx.request.body);
-          const { folderId, alternativeText, caption } = payload;
+          const { folderId, alternativeText = null, caption = null, skipIfExist = false } = payload;
+
+          if (skipIfExist) {
+            const existing = await strapi.entityService.findMany('plugin::upload.file', {
+              filters: {
+                name: { $eq: fileObj.originalFilename },
+                caption: { $eq: caption },
+                alternativeText: { $eq: alternativeText },
+              },
+              limit: 1,
+            });
+      
+            if (existing.length > 0) {
+              ctx.body = { data: existing[0], skipped: true };
+              return;
+            }
+          }
+
           const data = {
             fileInfo: {
               name: fileObj.originalFilename,
@@ -280,6 +297,46 @@ export default createCoreController(
           ctx.body = { data: updated };
         } catch (error) {
           ctx.throw(500, error);
+        }
+      },
+
+      // Retrieve files with optional sorting and search
+      async getFiles(ctx) {
+        try {
+          const { name, caption, alternativeText, sort } = ctx.request
+            .query as Record<string, string | undefined>;
+
+          const filters: Record<string, any> = {};
+          if (name) {
+            filters.name = { $containsi: name };
+          }
+          if (caption) {
+            filters.caption = { $containsi: caption };
+          }
+          if (alternativeText) {
+            filters.alternativeText = { $containsi: alternativeText };
+          }
+
+          let sortArray: string[] = [];
+          if (sort) {
+            sortArray = (Array.isArray(sort) ? sort : [sort]).map((s) => {
+              const [field, order = 'asc'] = s.split(':');
+              return `${field}:${order}`;
+            });
+          }
+
+          const files = await strapi.entityService.findMany(
+            'plugin::upload.file',
+            {
+              filters,
+              sort: sortArray,
+              populate: ['folder'],
+            }
+          );
+
+          ctx.body = files;
+        } catch (error) {
+          ctx.throw(error.status || 400, error);
         }
       },
 

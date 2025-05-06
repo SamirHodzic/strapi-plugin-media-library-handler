@@ -52,6 +52,12 @@ const routes = {
       },
       {
         method: 'GET',
+        path: '/files',
+        handler: 'controller.getFiles',
+        config: {},
+      },
+      {
+        method: 'GET',
         path: '/files/:id',
         handler: 'controller.getFile',
         config: {},

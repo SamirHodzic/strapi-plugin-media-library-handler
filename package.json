@@ -1,5 +1,5 @@
 {
-  "version": "0.1.2",
+  "version": "0.1.6",
   "name": "strapi-plugin-media-library-handler",
   "description": "Plugin for handling media library (dirs/files manipulation) through api in Strapi",
   "license": "MIT",
